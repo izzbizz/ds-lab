@@ -130,3 +130,6 @@ dmypy.json
 
 # Large data
 sample.csv
+
+# data folder, can we include the sample here?
+data
