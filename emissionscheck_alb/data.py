@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 def keep_pass_fail(df):
     '''
     Removes rows that do not have value `"P"` or `"F"` in target variable `OVERALL_RESULT`
