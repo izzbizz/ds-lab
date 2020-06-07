@@ -41,9 +41,10 @@ def get_car_age(df):
     
     '''
     # convert df['TEST_EDATE'] to datetime
-    df['CAR_AGE'] = pd.to_datetime(df['TEST_EDATE']).dt.year - df['MODEL_YEAR']
+    df_copy = df.copy()
+    df_copy.loc[:, 'CAR_AGE'] = pd.to_datetime(df_copy.loc[: ,'TEST_EDATE']).dt.year - df_copy.loc[:, 'MODEL_YEAR']
     
     # add +1 to df['CAR_AGE']
-    df['CAR_AGE'] += 1
+    df_copy.loc[:, 'CAR_AGE'] += 1
     
-    return df
+    return df_copy
