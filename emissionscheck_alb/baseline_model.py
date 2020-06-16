@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 
-def run_baseline_model(features_train, features_test, target_train, target_test, model, random_state=None, class_weight=None, max_fpr=None):
+def run_baseline_model(features_train, features_test, target_train, target_test, model, random_state=None, class_weight=None, max_fpr=None, max_iter=None):
     """
     Run logistic regression or SVC with cross validation
 
@@ -41,7 +41,7 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
     """
 
     if model == "logreg":
-        lr = LogisticRegression(class_weight=class_weight, random_state=random_state)
+        lr = LogisticRegression(class_weight=class_weight, random_state=random_state,max_iter=max_iter)
 
         clf_pipeline = make_pipeline(MinMaxScaler(), lr)
 
