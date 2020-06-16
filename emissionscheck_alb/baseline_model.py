@@ -73,3 +73,4 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
     print(f'Mean cross-validation score: {mean_cv_score}')
 
     return fitted_model
+
