@@ -41,7 +41,7 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
     """
 
     if model == "logreg":
-        lr = LogisticRegression(class_weight=class_weight, random_state=random_state, max_iter=max_iter)
+        lr = LogisticRegression(class_weight=class_weight, random_state=random_state)
 
         clf_pipeline = make_pipeline(MinMaxScaler(), lr)
 
