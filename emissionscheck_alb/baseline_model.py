@@ -6,9 +6,11 @@ from sklearn.metrics import roc_auc_score, plot_confusion_matrix, classification
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_selection import RFE
 
 
-def run_baseline_model(features_train, features_test, target_train, target_test, model, random_state=None, class_weight=None, max_fpr=None, max_iter=None):
+def run_baseline_model(features_train, features_test, target_train, target_test, model, random_state=None, class_weight=None, max_fpr=None, max_iter=None, n_estimators=None, max_leaf_nodes=None, n_features_to_select=None):
     """
     Run logistic regression or SVC with cross validation
 
@@ -34,6 +36,15 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
     max_fpr: float > 0 and <= 1
         Standardized partial AUC over the range [0, max_fpr] is given
 
+    max_iter: int, default=100
+        logreg - Maximum number of iterations taken for the solvers to converge.
+
+    max_leaf_nodes: int, default=None
+        rfclassifier - Grow trees with max_leaf_nodes in best-first fashion.
+
+    n_estimators: int, default=100
+        rfclassifier - The number of trees in the forest.
+
     Notes
     -----
     Shows confusion matrix, classification report, cross val score (ROC AUC)
@@ -49,6 +60,16 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
         svc = SVC(class_weight=class_weight)
 
         clf_pipeline = make_pipeline(MinMaxScaler(), svc)
+
+    elif model == "rf":
+        rf = RandomForestClassifier(class_weight=class_weight,n_estimators=n_estimators,max_leaf_nodes=max_leaf_nodes)
+
+        clf_pipeline = make_pipeline(MinMaxScaler(), rf)
+
+    elif model == "rfe":
+        rfe = RFE(RandomForestClassifier(n_estimators=n_estimators),n_features_to_select=n_features_to_select)
+
+        clf_pipeline = make_pipeline(MinMaxScaler(), rfe)
 
     # fit and predict labels and probabilities
     fitted_model = clf_pipeline.fit(features_train, target_train)
@@ -66,11 +87,15 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
     print(f'ROC AUC Score is {roc_auc}')
 
     # cross validation
-    cv_score = cross_val_score(clf_pipeline, features_train, target_train, scoring="roc_auc")
     mean_cv_score = round(np.mean(cv_score), 2)
 
     print(f'Cross-validation scores: {cv_score}')
     print(f'Mean cross-validation score: {mean_cv_score}')
+
+    ### summarize feature importance
+    importance = clf_pipeline.coef_
+    for i, v in enumerate(importance):
+        print('Feature: %0d, Score: %.5f' % (i, v))
 
     return fitted_model
 
