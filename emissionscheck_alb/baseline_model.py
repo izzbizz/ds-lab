@@ -93,9 +93,9 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
     print(f'Mean cross-validation score: {mean_cv_score}')
 
     ### summarize feature importance
-    importance = clf_pipeline.coef_
-    for i, v in enumerate(importance):
-        print('Feature: %0d, Score: %.5f' % (i, v))
+   # importance = clf_pipeline.coef_
+    #for i, v in enumerate(importance):
+     #   print('Feature: %0d, Score: %.5f' % (i, v))
 
     return fitted_model
 
