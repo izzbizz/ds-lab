@@ -87,15 +87,11 @@ def run_baseline_model(features_train, features_test, target_train, target_test,
     print(f'ROC AUC Score is {roc_auc}')
 
     # cross validation
+    cv_score = cross_val_score(clf_pipeline, features_train, target_train, scoring="roc_auc")
     mean_cv_score = round(np.mean(cv_score), 2)
 
     print(f'Cross-validation scores: {cv_score}')
     print(f'Mean cross-validation score: {mean_cv_score}')
-
-    ### summarize feature importance
-   # importance = clf_pipeline.coef_
-    #for i, v in enumerate(importance):
-     #   print('Feature: %0d, Score: %.5f' % (i, v))
 
     return fitted_model
 
